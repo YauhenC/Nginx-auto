@@ -1,0 +1,22 @@
+# install-services.yml
+
+---
+  - hosts: loadbalancers
+    become: true
+    tasks:
+      - name: Installing nginx
+        yum: name=nginx state=present
+      - name: Ensure nginx starts
+        service: name=nginx state=started enabled=yes
+
+  - hosts: webservers
+    become: true
+    tasks:
+      - name: Installing services
+        yum:
+          name:
+            - nginx
+            - php
+          state: present
+      - name: Ensure nginx starts
+        service: name=nginx state=started enabled=yes
